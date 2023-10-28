@@ -1,6 +1,1 @@
-clash S:\tools\clash_win\Clash for Windows.exe  
-new-gs S:\code\work\\wl-x86-gs  
-new-gc S:\code\work\\new-gc  
-agent S:\agent\new-gs  
-killer S:\tools\AndroidKiller\AndroidKiller.exe  
-clumsy S:\tools\net\clumsy-win64\clumsy.exe  
+clash H:\\Tools\\clash\\Clash for Windows.exe
