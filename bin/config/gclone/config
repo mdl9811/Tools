@@ -1,1 +1,3 @@
-depot_tools https://chromium.googlesource.com/chromium/tools/depot_tools no_proxy 1
+tools-pack https://gitee.com/aixiaoxiaohui/tools-pack.git no_proxy 1
+
+depot_tools https://chromium.googlesource.com/chromium/tools/depot_tools proxy 1
