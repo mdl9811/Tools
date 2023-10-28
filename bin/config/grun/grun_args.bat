@@ -1,12 +1,12 @@
 @echo off
 
 setlocal
-set GRUN=C:\\Tools\\bin\\config\\grun\\grun.bat
-set COMMAND=C:\\Tools\\bin\\config\\grun\\command.bat
-set CONFIG_WORK_PATH=C:\\Tools\\bin\\config\\grun
-set CONFIG_PATH=C:\\Tools\\bin\\config\\grun\\config
-set COMMAND=C:\\Tools\\bin\\config\\grun\\command
-set BIN_PATH=C:\\Tools\\bin
+set GRUN=%GLOBAL_TOOLS_PATH%\config\\grun\\grun.bat
+set COMMAND=%GLOBAL_TOOLS_PATH%\config\\grun\\command.bat
+set CONFIG_WORK_PATH=%GLOBAL_TOOLS_PATH%\config\\grun
+set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\\grun\\config
+set COMMAND=%GLOBAL_TOOLS_PATH%\config\\grun\\command
+set BIN_PATH=%GLOBAL_TOOLS_PATH%
 set NOTEPAD=C:\\Program Files (x86)\\Notepad++\\notepad++.exe
 
 for /f "tokens=1* delims=." %%a in ("%1") do set PARMMENT_1=%%a

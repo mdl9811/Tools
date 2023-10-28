@@ -1,7 +1,7 @@
 @echo off
 
-set CLONE_PATH_CONFIG=C:\Tools\bin\config\gclone\path
-set CLONE_CONFIG=C:\Tools\bin\config\gclone\config
+set CLONE_PATH_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\path
+set CLONE_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\config
 
 if not exist "%CLONE_PATH_CONFIG%" (
 	echo clone path config no exist
