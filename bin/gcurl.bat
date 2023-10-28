@@ -3,6 +3,7 @@
 set CURL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gcurl\config
 set CURL_OPUPUT_PATH=%GLOBAL_TOOLS_PATH%\temp
 set DOWNLOAD_LOG=%GLOBAL_TOOLS_PATH%\log
+set GLOBAL_ALLOW=%GLOBAL_TOOLS_PATH%\config\global\allow
 
 if not exist "%CURL_CONFIG%" (
 	echo gcurl path:[%CURL_CONFIG%] no exist
@@ -33,14 +34,20 @@ for /F "tokens=1-4" %%A in (%CURL_CONFIG%) do (
 		set HTTP_PROXY=
 		set HTTPS_PROXY=
 	)
-	
-	if %%D == 1 (
+	if exist %GLOBAL_ALLOW% (
 		echo download [%%A:%%B]
 		echo [%%A : %%B] %date% %time% >> %DOWNLOAD_LOG%\gcurl_log
 		curl -LJO %%B
 	) else (
-		echo no download [%%A:%%B]
+		if %%D == 1 (
+			echo download [%%A:%%B]
+			echo [%%A : %%B] %date% %time% >> %DOWNLOAD_LOG%\gcurl_log
+			curl -LJO %%B
+		) else (
+			echo no download [%%A:%%B]
+		)
 	)
+
 )
 
 

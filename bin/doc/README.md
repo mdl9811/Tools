@@ -6,6 +6,7 @@ conifg目录结构 根据命令名称划分
 请求相关命令 配置 相同规则
 1：name 2:url 3:proxy  4:download or no download
 
+当 allow 放到 global目录下时 所有文件都将下载 相应配置不生效
 
 所有功能 都是可配置的
 genv 设置环境变量
