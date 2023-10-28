@@ -1,8 +1,18 @@
 @echo off
 
-echo gloabl tools path:%cd% name:GLOBAL_TOOLS_PATH
+set PARMMENT_1=%1
 
-setx "GLOBAL_TOOLS_PATH" "%cd%"
+if not defined PARMMENT_1 (
+	echo path null exit
+	exit /b 0
+)
 
-echo gloabl proxy url:http://127.0.0.1:1080 name:URL_PROXY
-setx "URL_PROXY" "http://127.0.0.1:1080"
+setx "GLOBAL_TOOLS_PATH" %1
+
+echo gloabl tools path:%GLOBAL_TOOLS_PATH% name:GLOBAL_TOOLS_PATH
+set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\global\config
+
+for /F "tokens=1,*" %%A in (%CONFIG_PATH%) do (
+	echo gloabl name:%%A value:%%B
+	setx "%%A" "%%B"
+)
