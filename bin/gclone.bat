@@ -2,6 +2,7 @@
 
 set CLONE_PATH_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\path
 set CLONE_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\config
+set CLONE_LOG=%GLOBAL_TOOLS_PATH%\config\gclone\log
 
 if not exist "%CLONE_PATH_CONFIG%" (
 	echo clone path config no exist
@@ -28,15 +29,26 @@ if not exist "%SRC_PATH%" mkdir %SRC_PATH%
 
 echo start clone src path:%SRC_PATH%
 
-rem 执行 genv.bat 
-echo exec genv
-call genv
 
 rem clone 代码 下载到 /src 
 
-for /F "tokens=1,*" %%A in (%CLONE_CONFIG%) do (
-	echo clone [%%A] path:[%%B]
-	git clone %%B %SRC_PATH%\%%A
+
+for /F "tokens=1-4" %%A in (%CLONE_CONFIG%) do (
+	set HTTP_PROXY=%URL_PROXY%
+	set HTTPS_PROXY=%URL_PROXY%
+	if %%C == no_proxy (
+		echo %%A no proxy
+		set HTTP_PROXY=
+		set HTTPS_PROXY=
+	)
+	
+	if %%D == 1 (
+		echo clone [%%A] path:[%%B]
+		echo [%%A : %%B] %date% %time% >> %CLONE_LOG%
+		git clone %%B %SRC_PATH%\%%A
+	) else (
+		echo no clone [%%A:%%B]
+	)
 )
 
 rem git clone https://chromium.googlesource.com/chromium/tools/depot_tools ../m

@@ -1,42 +1,45 @@
 @echo off
 
-set CLONE_PATH_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\path
-set CLONE_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\config
+set CURL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gcurl\config
+set CURL_OPUPUT_PATH=%GLOBAL_TOOLS_PATH%\temp
+set DOWNLOAD_LOG=%GLOBAL_TOOLS_PATH%\config\gcurl\log
 
-if not exist "%CLONE_PATH_CONFIG%" (
-	echo clone path config no exist
+if not exist "%CURL_CONFIG%" (
+	echo gcurl path:[%CURL_CONFIG%] no exist
 	exit /b 0
 )
 
-if not exist "%CLONE_CONFIG%" (
-	echo clone config no exist
-	exit /b 0
+if not exist "%CURL_OPUPUT_PATH%" (
+	echo gcurl config no exist
+	mkdir %CURL_OPUPUT_PATH%
 )
 
-for /F "tokens=1,*" %%A in (%CLONE_PATH_CONFIG%) do (
-  if src==%%A set SRC_PATH=%%B&goto execute-done
+echo http_proxy:%HTTP_PROXY% https_proxy:%HTTPS_PROXY%
+
+cd %CURL_OPUPUT_PATH%
+
+echo start curl  save path:%CURL_OPUPUT_PATH%
+echo proxy url:%URL_PROXY%
+
+for /F "tokens=1-4" %%A in (%CURL_CONFIG%) do (
+	set HTTP_PROXY=%URL_PROXY%
+	set HTTPS_PROXY=%URL_PROXY%
+	if %%C == no_proxy (
+		echo %%A no proxy
+		set HTTP_PROXY=
+		set HTTPS_PROXY=
+	)
+	
+	if %%D == 1 (
+		echo download [%%A:%%B]
+		echo [%%A : %%B] %date% %time% >> %DOWNLOAD_LOG%
+		curl -LJO %%B
+	) else (
+		echo no download [%%A:%%B]
+	)
 )
 
-:execute-done
 
-if not defined SRC_PATH (
-	echo no src path exit
-	exit /b 0
-)
 
-if not exist "%SRC_PATH%" mkdir %SRC_PATH%
 
-echo start clone src path:%SRC_PATH%
 
-rem 执行 genv.bat 
-echo exec genv
-call genv
-
-rem clone 代码 下载到 /src 
-
-for /F "tokens=1,*" %%A in (%CLONE_CONFIG%) do (
-	echo clone [%%A] path:[%%B]
-	git clone %%B %SRC_PATH%\%%A
-)
-
-rem git clone https://chromium.googlesource.com/chromium/tools/depot_tools ../m
