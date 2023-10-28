@@ -2,7 +2,7 @@
 
 set CLONE_PATH_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\path
 set CLONE_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\config
-set CLONE_LOG=%GLOBAL_TOOLS_PATH%\config\gclone\log
+set CLONE_LOG=%GLOBAL_TOOLS_PATH%\log
 
 if not exist "%CLONE_PATH_CONFIG%" (
 	echo clone path config no exist
@@ -12,6 +12,10 @@ if not exist "%CLONE_PATH_CONFIG%" (
 if not exist "%CLONE_CONFIG%" (
 	echo clone config no exist
 	exit /b 0
+)
+
+if not exist %CLONE_LOG% (
+	mkdir %CLONE_LOG%
 )
 
 for /F "tokens=1,*" %%A in (%CLONE_PATH_CONFIG%) do (
@@ -44,7 +48,7 @@ for /F "tokens=1-4" %%A in (%CLONE_CONFIG%) do (
 	
 	if %%D == 1 (
 		echo clone [%%A] path:[%%B]
-		echo [%%A : %%B] %date% %time% >> %CLONE_LOG%
+		echo [%%A : %%B] %date% %time% >> %CLONE_LOG%\gclone_log
 		git clone %%B %SRC_PATH%\%%A
 	) else (
 		echo no clone [%%A:%%B]
