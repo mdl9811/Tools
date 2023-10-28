@@ -8,6 +8,7 @@ if not defined PARMMENT_1 (
 )
 
 setx "GLOBAL_TOOLS_PATH" %1
+setx "GLOBAL_TOOLS_PATH" %1
 
 echo gloabl tools path:%GLOBAL_TOOLS_PATH% name:GLOBAL_TOOLS_PATH
 set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\global\config
