@@ -2,10 +2,7 @@
 
 setlocal
 
-set PULL_CONFIG=%GLOBAL_TOOLS_PATH%\local\config\gclone\tools-pack\sparse-checkout
-if not exist %PULL_CONFIG% (
-	set PULL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\tools-pack\sparse-checkout
-)
+set ECHO_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\tools-pack\echo-sparse.bat
 
 set SRC_PATH=%1
 set ENABLE_ALL=%3
@@ -27,8 +24,7 @@ if not exist %INIT_PATH% (
 echo pull tools pack path:%TOOLS_PATH%
 
 if "%ENABLE_ALL%" neq  "1" (
-	echo copy config src:%PULL_CONFIG% target:%TARGET_PATH%
-	xcopy %PULL_CONFIG% %TARGET_PATH%
+	call %ECHO_CONFIG% %TARGET_PATH%
 )
 
 cmd /c git pull origin master
