@@ -1,7 +1,11 @@
 @echo off
 
 setlocal
-set PULL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\tools-pack\sparse-checkout
+
+set PULL_CONFIG=%GLOBAL_TOOLS_PATH%\local\config\gclone\tools-pack\sparse-checkout
+if not exist %PULL_CONFIG% (
+	set PULL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gclone\tools-pack\sparse-checkout
+)
 
 set SRC_PATH=%1
 set ENABLE_ALL=%3
