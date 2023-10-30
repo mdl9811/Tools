@@ -16,7 +16,7 @@ cd %TOOLS_PATH%
 
 if not exist %INIT_PATH% (
 	git init
-	git remote add origin git@gitee.com:aixiaoxiaohui/tools-pack.git
+	git remote add origin https://gitee.com/aixiaoxiaohui/tools-pack.git
 	git config --local core.sparsecheckout true
 )
 
