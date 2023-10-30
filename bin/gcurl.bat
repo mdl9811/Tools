@@ -1,9 +1,15 @@
 @echo off
 
-set CURL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gcurl\config
+
 set CURL_OPUPUT_PATH=%GLOBAL_TOOLS_PATH%\temp
 set DOWNLOAD_LOG=%GLOBAL_TOOLS_PATH%\log
 set GLOBAL_ALLOW=%GLOBAL_TOOLS_PATH%\config\global\allow
+
+set CURL_CONFIG=%GLOBAL_TOOLS_PATH%\local\config\gcurl\config
+
+if not exist %CURL_CONFIG% (
+	set CURL_CONFIG=%GLOBAL_TOOLS_PATH%\config\gcurl\config
+)
 
 if not exist "%CURL_CONFIG%" (
 	echo gcurl path:[%CURL_CONFIG%] no exist

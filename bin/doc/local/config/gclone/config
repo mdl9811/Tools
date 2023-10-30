@@ -1,0 +1,3 @@
+depot_tools https://chromium.googlesource.com/chromium/tools/depot_tools proxy 0
+
+information  https://github.com/mdl9811/information.git proxy 0

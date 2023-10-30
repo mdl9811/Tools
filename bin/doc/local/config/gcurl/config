@@ -1,0 +1,5 @@
+npp https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.5/npp.8.5.Installer.x64.exe proxy 0
+
+llvm https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/LLVM-17.0.2-win64.exe proxy 0
+
+beyond https://www.scootersoftware.com/files/BCompare-4.4.7.28397.exe no_proxy 0

@@ -3,7 +3,12 @@
 setlocal
 set GRUN=%GLOBAL_TOOLS_PATH%\config\grun\\grun.bat
 set GRUN_ARGS=%GLOBAL_TOOLS_PATH%\config\\grun\\grun_args.bat
-set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\\grun\\config
+
+set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\local\config\grun\config
+
+if not exist %CONFIG_PATH% (
+	set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\grun\config
+)
 
 if not exist "%CONFIG_PATH%" (
   echo grun config not exist [config path is %CONFIG_PATH%]
