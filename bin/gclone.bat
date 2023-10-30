@@ -23,6 +23,7 @@ for /F "tokens=1,*" %%A in (%CLONE_PATH_CONFIG%) do (
   if src==%%A set SRC_PATH=%%B&goto execute-done
 )
 
+
 :execute-done
 
 if not defined SRC_PATH (
