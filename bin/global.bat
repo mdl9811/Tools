@@ -10,7 +10,11 @@ if not defined PARMMENT_1 (
 setx "GLOBAL_TOOLS_PATH" %1
 
 echo gloabl tools path:%GLOBAL_TOOLS_PATH% name:GLOBAL_TOOLS_PATH
-set CONFIG_PATH=%PARMMENT_1%\config\global\config
+set CONFIG_PATH=%PARMMENT_1%\local\config\global\config
+
+if not exist %CONFIG_PATH% (
+	set CONFIG_PATH=%PARMMENT_1%\config\global\config
+)
 
 for /F "tokens=1,*" %%A in (%CONFIG_PATH%) do (
 	echo gloabl name:%%A value:%%B
