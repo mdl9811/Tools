@@ -31,5 +31,5 @@ if "%ENABLE_ALL%" neq  "1" (
 	xcopy %PULL_CONFIG% %TARGET_PATH%
 )
 
-git pull origin master
-git checkout master
+cmd /c git pull origin master
+cmd /c git checkout master
