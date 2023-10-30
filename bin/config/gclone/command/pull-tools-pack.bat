@@ -19,9 +19,9 @@ if not exist %TOOLS_PATH% mkdir %TOOLS_PATH%
 cd %TOOLS_PATH%
 
 if not exist %INIT_PATH% (
-	git init
-	git remote add origin https://gitee.com/aixiaoxiaohui/tools-pack.git
-	git config --local core.sparsecheckout true
+	cmd /c git init
+	cmd /c git remote add origin https://gitee.com/aixiaoxiaohui/tools-pack.git
+	cmd /c git config --local core.sparsecheckout true
 )
 
 echo pull tools pack path:%TOOLS_PATH%
