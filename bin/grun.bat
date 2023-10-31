@@ -5,7 +5,6 @@ set GRUN=%GLOBAL_TOOLS_PATH%\config\grun\\grun.bat
 set GRUN_ARGS=%GLOBAL_TOOLS_PATH%\config\\grun\\grun_args.bat
 set CONFIG_PATH=%GLOBAL_TOOLS_CONFIG_PATH%\config\grun\config
 
-
 if not exist "%CONFIG_PATH%" (
   echo grun config not exist [config path is %CONFIG_PATH%]
   echo please run global [config-path]

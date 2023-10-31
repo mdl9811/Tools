@@ -1,9 +1,7 @@
 @echo off
 
-set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\local\config\\gclone\tools-pack\config
-if not exist %CONFIG_PATH% (
-	set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\\gclone\tools-pack\config
-)
+set CONFIG_PATH=%GLOBAL_TOOLS_CONFIG_PATH%\config\\gclone\tools-pack\config
+
 
 set OPUPUT_PATH=%1\sparse-checkout
 

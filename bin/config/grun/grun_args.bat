@@ -4,7 +4,7 @@ setlocal
 set GRUN=%GLOBAL_TOOLS_PATH%\config\\grun\\grun.bat
 set COMMAND=%GLOBAL_TOOLS_PATH%\config\\grun\\command.bat
 set CONFIG_WORK_PATH=%GLOBAL_TOOLS_PATH%\config\\grun
-set CONFIG_PATH=%GLOBAL_TOOLS_PATH%\config\\grun\\config
+set CONFIG_PATH=%GLOBAL_TOOLS_CONFIG_PATH%\config\\grun\\config
 set COMMAND=%GLOBAL_TOOLS_PATH%\config\\grun\\command
 set BIN_PATH=%GLOBAL_TOOLS_PATH%
 set NOTEPAD=C:\\Program Files (x86)\\Notepad++\\notepad++.exe
