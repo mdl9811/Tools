@@ -1,5 +1,5 @@
 URL_PROXY http://127.0.0.1:1080
 
-LLVM_BIN "C:\Program Files\LLVM\bin"
+LLVM_BIN C:\Program Files\LLVM\bin
 
-ZIP "C:\Program Files\7-Zip\7z.exe"
+ZIP C:\Program Files\7-Zip\7z.exe

@@ -23,5 +23,5 @@ set CONFIG_PATH=%PARMMENT_2%\config\global\config
 
 for /F "tokens=1,*" %%A in (%CONFIG_PATH%) do (
 	echo gloabl name:%%A value:%%B
-	setx "%%A" "%%B"
+	cmd /c setx "%%A" "%%B"
 )
