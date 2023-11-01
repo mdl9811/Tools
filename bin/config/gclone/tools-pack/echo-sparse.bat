@@ -5,13 +5,17 @@ set CONFIG_PATH=%GLOBAL_TOOLS_CONFIG_PATH%\config\\gclone\tools-pack\config
 set OPUPUT_PATH=%1\sparse-checkout
 set TARGETD=%4
 
+echo %1 %2 %3
 if exist %OPUPUT_PATH% del %OPUPUT_PATH%
+echo /dir >> %OPUPUT_PATH% 
+
 echo ---------------------------------------------------------------------------------
 echo OPUPUT_PATH:%OPUPUT_PATH%
 
 :next-arg
 if "%1"=="" goto args-done
 if "%1"=="--target" goto target-args
+if "%1"=="--list" goto list
 shift
 goto next-arg
 

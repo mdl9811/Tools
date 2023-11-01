@@ -10,10 +10,26 @@ set ENABLE_ALL=%3
 set INIT_PATH=%SRC_PATH%\tools-pack\.git
 set TOOLS_PATH=%SRC_PATH%\tools-pack
 set TARGET_PATH=%TOOLS_PATH%\.git\info
+set LIST_PATH=%TOOLS_PATH%\dir\list
 
 if not exist %TOOLS_PATH% mkdir %TOOLS_PATH%
 
 cd %TOOLS_PATH%
+
+if not exist %LIST_PATH% (
+	echo list cofig not exist
+	exist /b 0
+)
+if "%3" == "--list" (
+echo ---------------------------------------------------
+echo --list
+	for /F "tokens=1-4" %%A in (%LIST_PATH%) do (
+		echo %%A
+	)
+echo ---------------------------------------------------
+exit /b 0
+)
+
 
 if not exist %INIT_PATH% (
 	cmd /c git init
