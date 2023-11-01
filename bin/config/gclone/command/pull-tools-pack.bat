@@ -19,13 +19,12 @@ if not exist %INIT_PATH% (
 	cmd /c git init
 	cmd /c git remote add origin https://gitee.com/aixiaoxiaohui/tools-pack.git
 	cmd /c git config --local core.sparsecheckout true
+	cmd /c git branch --set-upstream-to=origin/master master
 )
 
 echo pull tools pack path:%TOOLS_PATH%
 
-if "%ENABLE_ALL%" neq  "1" (
-	call %ECHO_CONFIG% %TARGET_PATH%
-)
+call %ECHO_CONFIG% %TARGET_PATH% %*
 
 cmd /c git pull origin master
 cmd /c git checkout master
