@@ -18,7 +18,7 @@ goto next-arg
 :target-args
 if "%1"=="" goto args-done
 if "%1"=="--target" shift
-echo /%1/ >> %OPUPUT_PATH% & echo download *%1 
+echo %1 >> %OPUPUT_PATH% & echo download *%1 
 shift
 goto target-args
 
