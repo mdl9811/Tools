@@ -1,4 +1,10 @@
+# -*- coding: UTF-8 -*-
 import os
+import colorama
+
+colorama.init(autoreset=True)
+
+
 
 def echo_red(str):
     print("\033[0;31;40m%s\033[0m" % str)
