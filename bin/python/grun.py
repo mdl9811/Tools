@@ -12,7 +12,6 @@ import configparser
 RUN='run'
 
 # 变量
-tools_path=None
 tools_config_path=None
 url_proxy=None
 
@@ -90,14 +89,9 @@ def parse_command_line(args):
 
 # 主函数
 def run_loop(args):
-    tools_path = csystem.getenv("TOOLS_PATH")
     tools_config_path = csystem.getenv("TOOLS_CONFIG_PATH")
-    if tools_path == None or tools_config_path == None:
-        csystem.echo_red("No ENV TOOLS_PATH or TOOLS_CONFIG_PATH please run global --set-user TOOLS_PATH=[path] TOOLS_CONFIG_PATH=[path]")
-        return
-
-    if not os.path.exists(tools_path):
-        csystem.echo_red("Tools Path does not exist")
+    if tools_config_path == None:
+        csystem.echo_red("No ENV TOOLS_CONFIG_PATH please run global --set-user TOOLS_CONFIG_PATH=[path]")
         return
 
     if not os.path.exists(tools_config_path):

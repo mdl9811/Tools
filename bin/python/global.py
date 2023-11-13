@@ -2,7 +2,7 @@ import pub.system as csystem
 import sys
 
 def help():
-    csystem.echo_red("must env TOOLS_PATH and TOOLS_CONFIG_PATH please run [global --set-user TOOLS_PATH=<path> TOOLS_CONFIG_PATH=<config-path>]")
+    csystem.echo_red("must envTOOLS_CONFIG_PATH please run [global --set-user TOOLS_CONFIG_PATH=<config-path>]")
 
 def get_key_value(str):
     if str.find("=") < 0:
