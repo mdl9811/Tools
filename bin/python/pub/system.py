@@ -4,7 +4,14 @@ import colorama
 
 colorama.init(autoreset=True)
 
-
+def get_key_value(str, split):
+    if str.find(split) < 0:
+        return None, None
+    key = str.split(split)[0]
+    val = str.split(split)[1]
+    if key and val:
+        return key, val
+    return None, None
 
 def echo_red(str):
     print("\033[0;31;40m%s\033[0m" % str)
