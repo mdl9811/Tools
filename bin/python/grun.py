@@ -33,6 +33,9 @@ def parse_path(args):
     elif args[1] == "dir":
         echo_path.print_list_dir()
 
+def echo_list():
+    for item in conf.items(RUN):
+       print(item)
 
 def echo_help(args):
     for i in range(len(args)):
@@ -77,7 +80,7 @@ def parse_command_line(args):
         help(args[j + 1:])
         return
     if args[j] == "--list":
-        csystem.echo_red(conf.items(RUN))
+        echo_list()
         return
     if args[j] == "--fetch":
         fetch(args[j + 1:])
