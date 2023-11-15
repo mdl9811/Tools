@@ -140,6 +140,7 @@ def download_http_file(url):
     filepath = path + "\\" + url.split("/")[-1]
     content_size = int(response.headers['content-length'])
     csystem.echo_yellow("download url: %s" % url)
+    csystem.echo_yellow("download save path: %s" % filepath)
     csystem.echo_yellow("download,[File size]:{size:.2f} MB".format(size = content_size / chunk_size / 1024))
     with open(filepath,'wb') as file:
         for data in response.iter_content(chunk_size = chunk_size):
@@ -147,7 +148,7 @@ def download_http_file(url):
             size += len(data)
             print('\r'+'[下载进度]:%s%.2f%%' % ('>' * int(size * 50 / content_size), float(size / content_size * 100)) ,end=' ')
     end = time.time()
-    print('Download completed! path:[%s], times: %.2f秒' % (filepath, (end - start)))  #输出下载用时时间
+    print('Download completed! times: %.2f秒' % (end - start))  #输出下载用时时间
 
 def git_clone(url):
     path = get_git_download_path()
