@@ -117,10 +117,10 @@ def get_remote_url(name):
     return conf[FETCH].get(name)
 
 def get_http_download_path():
-   return conf[GLOBAL].get("http-download-path") 
+   return conf[GLOBAL].get("HTTPDL") 
 
 def get_git_download_path():
-   return conf[GLOBAL].get("git-download-path") 
+   return conf[GLOBAL].get("GITDL") 
 
 def get_file_suffix(name):
     name.split("/")[-1]
@@ -130,6 +130,8 @@ def download_http_file(url):
     if path == None:
         csystem.echo_red("download path not exist please config path")
         return
+    if not os.path.exists(path):
+        os.mkdir(path)
     size = 0
     chunk_size = 1024
     start = time.time() # download start time
@@ -139,9 +141,9 @@ def download_http_file(url):
         return
     filepath = path + "\\" + url.split("/")[-1]
     content_size = int(response.headers['content-length'])
-    csystem.echo_yellow("download url: %s" % url)
-    csystem.echo_yellow("download save path: %s" % filepath)
-    csystem.echo_yellow("download,[File size]:{size:.2f} MB".format(size = content_size / chunk_size / 1024))
+    print("download url: %s" % url)
+    print("download save path: %s" % filepath)
+    print("download,[File size]:{size:.2f} MB".format(size = content_size / chunk_size / 1024))
     with open(filepath,'wb') as file:
         for data in response.iter_content(chunk_size = chunk_size):
             file.write(data)
