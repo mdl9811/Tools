@@ -5,11 +5,13 @@ import pub.path as cpath
 import pub.system as csystem
 import subprocess
 import configparser
+import requests
 
 # 解析所有命令 并执行 相关python
 
 # 常量
 RUN='run'
+FETCH='fetch'
 
 # 变量
 config_path=None
@@ -75,16 +77,16 @@ def echo_list():
     for item in conf.items(RUN):
        print(item)
 
-def echo_help(args):
-    for i in range(len(args)):
-        if args[i] == "grun":
-            csystem.echo_red("Usage: grun <name ...>")
 
-def help(args):
-    args_dict = args
-    if len(args) == 0:
-        args_dict = ["grun"]
-    echo_help(args_dict)
+def help():
+    csystem.echo_green("Usage: grun [option <arg> ] [run-name] ...")
+    csystem.echo_green("Option:")
+    csystem.echo_green("--fetch <args>: 拉取 git中文件 和 工具库中文件 可以配置代理进行拉取 args:[--add | -del | --list |[name...] ]")
+    csystem.echo_green("--list: 输出所有配置文件中run [key] [value]")
+    csystem.echo_green("--add: 添加可运行的配置选项")
+    csystem.echo_green("--del: 删除可运行的配置选项")
+    csystem.echo_green("--help: 输出帮助doc")
+
 
 
 def execute_com(name):
@@ -104,16 +106,45 @@ def runing_command(args):
             continue
         execute_com(path)
 
+
+def echo_fetch_list():
+    for item in conf.items(FETCH):
+       print(item)
+
+def get_remote_url(name):
+    return conf[FETCH].get(name)
+
+
+def download_http_file(url, filepath):
+    csystem.echo_yellow("download url: %s" % url)
+    res = requests.get(url)
+    total_size = res.headers["content-length"]
+    print(total_size)
+    with open(filepath,'wb') as file:
+        print(1)
+        file.write(res.content)
+
+
+
 def fetch(args):
-    pass
+    print(len(args))
+    if len(args) == 0:
+        for item in conf.items(FETCH):
+            url=item[1]
+            if url != None:
+                download_http_file(url, "C:\\Tools\\bin\\python\\1.exe")
+        return
+    return
+    for arg in args:
+        pass
 
 def parse_command_line(args):
     j = 1
     if len(args) <= j:
-        help([])
+        help()
         return
     if args[j] == "--help":
-        help(args[j + 1:])
+        help()
         return
     if args[j] == "--list":
         echo_list()

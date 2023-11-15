@@ -22,6 +22,9 @@ def echo_yellow(str):
 def echo_blue(str):
     print("\033[0;34;40m%s\033[0m" % str)
 
+def echo_green(str):
+    print("\033[0;32;40m%s\033[0m" % str)
+
 def setenv(key, value):
     os.environ[key] = value
 
