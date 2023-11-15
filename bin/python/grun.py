@@ -90,7 +90,6 @@ def help():
     csystem.echo_green("--help: 输出帮助doc")
 
 
-
 def execute_com(name):
     csystem.echo_blue("run " + name)
     if os.path.isdir(name):
@@ -99,6 +98,11 @@ def execute_com(name):
     if os.path.isfile(name):
         subprocess.Popen(name)
         return
+
+def open(args):
+    for name in args:
+        if os.path.exists(name):
+            execute_com(name)
 
 def runing_command(args):
     for arg in args:
@@ -198,6 +202,9 @@ def parse_command_line(args):
         return
     if args[j] == "--fetch":
         fetch(args[j + 1:])
+        return
+    if args[j] == "--open":
+        open(args[j + 1:])
         return
     if args[j] == "--echo-path":
         parse_path(args[j + 1:])
