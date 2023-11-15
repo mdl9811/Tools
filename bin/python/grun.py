@@ -6,12 +6,14 @@ import pub.system as csystem
 import subprocess
 import configparser
 import requests
+import time
 
 # 解析所有命令 并执行 相关python
 
 # 常量
 RUN='run'
 FETCH='fetch'
+GLOBAL='global'
 
 # 变量
 config_path=None
@@ -114,29 +116,65 @@ def echo_fetch_list():
 def get_remote_url(name):
     return conf[FETCH].get(name)
 
+def get_http_download_path():
+   return conf[GLOBAL].get("http-download-path") 
 
-def download_http_file(url, filepath):
+def get_git_download_path():
+   return conf[GLOBAL].get("git-download-path") 
+
+def get_file_suffix(name):
+    name.split("/")[-1]
+
+def download_http_file(url):
+    path = get_http_download_path()
+    if path == None:
+        csystem.echo_red("download path not exist please config path")
+        return
+    size = 0
+    chunk_size = 1024
+    start = time.time() # download start time
+    response = requests.get(url, stream=True)
+    if response.status_code != 200:
+        csystem.echo_red("Download failed with status code=%d" % response.status_code)
+        return
+    filepath = path + "\\" + url.split("/")[-1]
+    content_size = int(response.headers['content-length'])
     csystem.echo_yellow("download url: %s" % url)
-    res = requests.get(url)
-    total_size = res.headers["content-length"]
-    print(total_size)
+    csystem.echo_yellow("download,[File size]:{size:.2f} MB".format(size = content_size / chunk_size / 1024))
     with open(filepath,'wb') as file:
-        print(1)
-        file.write(res.content)
+        for data in response.iter_content(chunk_size = chunk_size):
+            file.write(data)
+            size += len(data)
+            print('\r'+'[下载进度]:%s%.2f%%' % ('>' * int(size * 50 / content_size), float(size / content_size * 100)) ,end=' ')
+    end = time.time()
+    print('Download completed! path:[%s], times: %.2f秒' % (filepath, (end - start)))  #输出下载用时时间
 
+def git_clone(url):
+    path = get_git_download_path()
+    if path == None:
+        csystem.echo_red("download path not exist please config path")
+        return
+    print(url)
 
+def download(url):
+    if url == None:
+        csystem.echo_red("Downloading url: %s not exist" % url)
+        return
+    if url.split(".")[-1] == "git" :
+        git_clone(url)
+    else :
+        download_http_file(url)
 
 def fetch(args):
-    print(len(args))
     if len(args) == 0:
         for item in conf.items(FETCH):
             url=item[1]
-            if url != None:
-                download_http_file(url, "C:\\Tools\\bin\\python\\1.exe")
+            download(url)    
         return
-    return
     for arg in args:
-        pass
+        url = get_remote_url(arg)
+        download(url)
+
 
 def parse_command_line(args):
     j = 1
