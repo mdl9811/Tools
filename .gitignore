@@ -1,4 +1,5 @@
 # Executables
+/bin/python/__pycache__/*
 /bin/python/*/__pycache__/*
 /src
 /tools-pack

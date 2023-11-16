@@ -80,17 +80,6 @@ def echo_list():
     for item in conf.items(RUN):
        print(item)
 
-
-def help():
-    csystem.echo_green("Usage: grun [option <arg> ] [run-name] ...")
-    csystem.echo_green("Option:")
-    csystem.echo_green("--fetch <args>: 拉取 git中文件 和 工具库中文件 可以配置代理进行拉取 args:[--add | -del | --list |[name...] ]")
-    csystem.echo_green("--list: 输出所有配置文件中run [key] [value]")
-    csystem.echo_green("--add: 添加可运行的配置选项")
-    csystem.echo_green("--del: 删除可运行的配置选项")
-    csystem.echo_green("--help: 输出帮助doc")
-
-
 def execute_com(name):
     csystem.echo_blue("run " + name)
     if os.path.isdir(name):
@@ -206,11 +195,11 @@ def parse_command_line(options, args):
 def add_command():
     hstr = '%prog [options [name]...]'
     parser = OptionParser(hstr, description='grun description', version=version.version())
-    parser.add_option('-l', '--list', action='store_true', dest='list', help='output list of commands')
-    parser.add_option('-a', '--add', action='store_true', dest='add', help='add command from command line')
-    parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command from command list')
-    parser.add_option('-f', '--fetch', action='store_true', dest='fetch', help='fetch git or http file value')
-    parser.add_option('-o', '--open', action='store_true', dest='open', help='open file or exe')
+    parser.add_option('-l', '--list', action='store_true', dest='list', help='list configuration commands and exit')
+    parser.add_option('-a', '--add', action='store_true', dest='add', help='add command configuration and exit')
+    parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command configuration and exit')
+    parser.add_option('-f', '--fetch', action='store_true', dest='fetch', help='fetch git or http resources and exit')
+    parser.add_option('-o', '--open', action='store_true', dest='open', help='open folder or exe file and exit')    
     return parser
 
 # 主函数
