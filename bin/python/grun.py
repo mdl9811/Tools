@@ -86,9 +86,23 @@ def del_config(args):
 def add_config(args):
     eumm_config(args, 0)
 
-def echo_list():
-    for item in conf.items(RUN):
-       print(item)
+def echo_list(args):
+    for key in args:
+        if key == "run":
+            for item in conf.items(RUN):
+                print(item)
+        if key == 'fetch':
+            for item in conf.items(FETCH):
+                print(item)
+        if key == 'global':
+            for item in conf.items(GLOBAL):
+                print(item)
+        if key == 'download':
+            for item in conf.items(DOWNLOAD):
+                print(item)
+        if key == 'process':
+            for item in conf.items(PROCESS):
+                print(item)
 
 def execute_com(name):
     csystem.echo_blue("run " + name)
@@ -243,7 +257,7 @@ def download_exe(args):
 
 def parse_command_line(options, args):
     if options.list:
-        echo_list()
+        echo_list(args[1:])
         return
     if options.add:
         add_config(args[1:])
@@ -271,7 +285,7 @@ def parse_command_line(options, args):
 def add_command():
     hstr = '%prog [options [name]...]'
     parser = OptionParser(hstr, description='grun description', version=version.version())
-    parser.add_option('-l', '--list', action='store_true', dest='list', help='list configuration commands and exit')
+    parser.add_option('-l', '--list', action='store_true', dest='list', help='--list:<args> configuration commands and exit')
     parser.add_option('-a', '--add', action='store_true', dest='add', help='add command configuration and exit')
     parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command configuration and exit')
     parser.add_option('-f', '--fetch', action='store_true', dest='fetch', help='fetch git or http resources and exit')
