@@ -19,6 +19,7 @@ import version
 RUN='run'
 FETCH='fetch'
 GLOBAL='global'
+PROCESS='process'
 
 # const options
 PROXY_TRUE = 0
@@ -231,6 +232,10 @@ def genv_command():
     command = command + ("set PATH={git_path}\depot_tools;%PATH%\n".format(git_path = git_path))
     return generate_bat2(command)
 
+def delp():
+    command = '@wmic process where name="%1" call terminate'
+    return generate_bat(command)
+
 def generate_script(args):
     if len(args) < 2:
         csystem.echo_red("参数不对")
@@ -238,6 +243,16 @@ def generate_script(args):
     if args[1] == 'genv':
         generate_script2(args[0], "genv.bat", genv_command())
         return
+    if args[1] == 'delp':
+        generate_script2(args[0], "genv.bat", delp())
+        return
+
+def del_process(args):
+    for name in args:
+        ep = conf[PROCESS].get(name)
+        if ep:
+            command = "wmic process where name='%s' call terminate" % ep
+            os.system(command)
 
 def parse_command_line(options, args):
     if options.list:
@@ -258,6 +273,9 @@ def parse_command_line(options, args):
     if options.generate:
         generate_script(args)
         return
+    if options.delp:
+        del_process(args[1:])
+        return
     runing_command(args[1:])
 
 def add_command():
@@ -268,7 +286,8 @@ def add_command():
     parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command configuration and exit')
     parser.add_option('-f', '--fetch', action='store_true', dest='fetch', help='fetch git or http resources and exit')
     parser.add_option('-o', '--open', action='store_true', dest='open', help='open folder or exe file and exit') 
-    parser.add_option('-g', '--generate-script', action='store_true', dest='generate', help='generate script and exit')   
+    parser.add_option('-g', '--generate-script', action='store_true', dest='generate', help='generate script and exit')
+    parser.add_option('--delp', action='store_true', dest='delp', help='exit prossces')   
     return parser
 
 # 主函数
