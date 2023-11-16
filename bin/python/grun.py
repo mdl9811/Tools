@@ -214,6 +214,10 @@ def generate_bat(command):
     command2 = "@echo off\nsetlocal\n" + command
     return command2
 
+def generate_bat2(command):
+    command2 = "@echo off\n" + command
+    return command2
+
 def genv_command():
     proxy = conf[GLOBAL].get("URL_PROXY")
     git_path = get_git_download_path()
@@ -225,7 +229,7 @@ def genv_command():
     command = command + ("set HTTP_PROXY=%s\n" % proxy)
     command = command + ("set HTTPS_PROXY=%s\n" % proxy)
     command = command + ("set PATH={git_path}\depot_tools;%PATH%\n".format(git_path = git_path))
-    return generate_bat(command)
+    return generate_bat2(command)
 
 def generate_script(args):
     if len(args) < 2:
