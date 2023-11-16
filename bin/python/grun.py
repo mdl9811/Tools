@@ -1,14 +1,17 @@
 # -*- coding: UTF-8 -*-
 import sys
 import os
+import string
+import re
+from optparse import OptionParser
 import pub.path as cpath
 import pub.system as csystem
 import subprocess
 import configparser
 import requests
 import time
-from optparse import OptionParser
 import version
+
 
 # 解析所有命令 并执行 相关python
 
@@ -198,6 +201,39 @@ def fetch(args):
         url = get_remote_url(arg)
         download(url)
 
+def generate_script2(path, name, script):
+    obj = re.search(r'Tools\\bin', path).span()
+    output_path = path[:obj[1]]
+    csystem.echo_green("Generating script from %s" % output_path)
+    filepath = output_path + "\\" + name
+    with open(filepath,'w') as file:
+        file.write(script)
+    print("Generated script %s success" % name)
+
+def generate_bat(command):
+    command2 = "@echo off\nsetlocal\n" + command
+    return command2
+
+def genv_command():
+    proxy = conf[GLOBAL].get("URL_PROXY")
+    git_path = get_git_download_path()
+    if proxy == None:
+        proxy = ""
+    if git_path == None:
+        git_path = ""
+    command = "set DEPOT_TOOLS_WIN_TOOLCHAIN=0\n"
+    command = command + ("set HTTP_PROXY=%s\n" % proxy)
+    command = command + ("set HTTPS_PROXY=%s\n" % proxy)
+    command = command + ("set PATH={git_path}\depot_tools;%PATH%\n".format(git_path = git_path))
+    return generate_bat(command)
+
+def generate_script(args):
+    if len(args) < 2:
+        csystem.echo_red("参数不对")
+        return
+    if args[1] == 'genv':
+        generate_script2(args[0], "genv.bat", genv_command())
+        return
 
 def parse_command_line(options, args):
     if options.list:
@@ -215,6 +251,9 @@ def parse_command_line(options, args):
     if options.fetch:
         fetch(args[1:])
         return
+    if options.generate:
+        generate_script(args)
+        return
     runing_command(args[1:])
 
 def add_command():
@@ -224,7 +263,8 @@ def add_command():
     parser.add_option('-a', '--add', action='store_true', dest='add', help='add command configuration and exit')
     parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command configuration and exit')
     parser.add_option('-f', '--fetch', action='store_true', dest='fetch', help='fetch git or http resources and exit')
-    parser.add_option('-o', '--open', action='store_true', dest='open', help='open folder or exe file and exit')    
+    parser.add_option('-o', '--open', action='store_true', dest='open', help='open folder or exe file and exit') 
+    parser.add_option('-g', '--generate-script', action='store_true', dest='generate', help='generate script and exit')   
     return parser
 
 # 主函数
