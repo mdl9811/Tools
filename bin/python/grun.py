@@ -7,6 +7,8 @@ import subprocess
 import configparser
 import requests
 import time
+from optparse import OptionParser
+import version
 
 # 解析所有命令 并执行 相关python
 
@@ -37,6 +39,7 @@ def parse_path(args):
     elif args[1] == "dir":
         echo_path.print_list_dir()
 
+
 def get_run_path(key):
     return conf[RUN].get(key)
 
@@ -54,8 +57,6 @@ def add_and_del(key, falg):
             return
         csystem.echo_yellow("add key:%s vluse:%s" % (key, v))
         conf.set(RUN, k, v)
-    
-
     conf.write(open(config_path, "w"))
    
 
@@ -99,7 +100,7 @@ def execute_com(name):
         subprocess.Popen(name)
         return
 
-def open(args):
+def go_open(args):
     for name in args:
         if os.path.exists(name):
             execute_com(name)
@@ -161,7 +162,8 @@ def git_clone(url):
     if path == None:
         csystem.echo_red("download path not exist please config path")
         return
-    print(url)
+    csystem.echo_blue("download url:%s save path:%s" % (url, path))
+    subprocess.call(['git', 'clone', url], cwd=path)
 
 def download(url):
     if url == None:
@@ -183,33 +185,33 @@ def fetch(args):
         download(url)
 
 
-def parse_command_line(args):
-    j = 1
-    if len(args) <= j:
-        help()
-        return
-    if args[j] == "--help":
-        help()
-        return
-    if args[j] == "--list":
+def parse_command_line(options, args):
+    if options.list:
         echo_list()
         return
-    if args[j] == "--del":
-        del_config(args[j + 1:])
+    if options.add:
+        add_config(args[1:])
         return
-    if args[j] == "--add":
-        add_config(args[j + 1:])
+    if options.dell:
+        del_config(args[1:])
         return
-    if args[j] == "--fetch":
-        fetch(args[j + 1:])
+    if options.open:
+        go_open(args[1:])
         return
-    if args[j] == "--open":
-        open(args[j + 1:])
+    if options.fetch:
+        fetch(args[1:])
         return
-    if args[j] == "--echo-path":
-        parse_path(args[j + 1:])
-        return
-    runing_command(args[j:])
+    runing_command(args[1:])
+
+def add_command():
+    hstr = '%prog [options [name]...]'
+    parser = OptionParser(hstr, description='grun description', version=version.version())
+    parser.add_option('-l', '--list', action='store_true', dest='list', help='output list of commands')
+    parser.add_option('-a', '--add', action='store_true', dest='add', help='add command from command line')
+    parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command from command list')
+    parser.add_option('-f', '--fetch', action='store_true', dest='fetch', help='fetch git or http file value')
+    parser.add_option('-o', '--open', action='store_true', dest='open', help='open file or exe')
+    return parser
 
 # 主函数
 def run_loop(args):
@@ -230,7 +232,10 @@ def run_loop(args):
         return
 
     conf.read(config_path, encoding='utf-8')
-    parse_command_line(args)
+
+    parser = add_command()
+    options, args = parser.parse_args(args)
+    parse_command_line(options, args)
 
 if __name__ == '__main__':
     run_loop(sys.argv)
