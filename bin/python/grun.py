@@ -17,6 +17,10 @@ RUN='run'
 FETCH='fetch'
 GLOBAL='global'
 
+# const options
+PROXY_TRUE = 0
+
+
 # 变量
 config_path=None
 url_proxy=None
@@ -154,7 +158,27 @@ def git_clone(url):
     csystem.echo_blue("download url:%s save path:%s" % (url, path))
     subprocess.call(['git', 'clone', url], cwd=path)
 
-def download(url):
+def parse_url(command):
+    url_list = {}
+    url = command.split("|")[0]
+    for com in command.split("|"):
+        if com == 'proxy':
+            if conf[GLOBAL].get("URL_PROXY") == None:
+                csystem.echo_blue("please set URL_PROXY")
+                continue
+            csystem.echo_blue("set proxy:%s" % conf[GLOBAL].get("URL_PROXY"))
+            csystem.setenv("HTTP_PROXY", conf[GLOBAL].get("URL_PROXY"))
+            csystem.setenv("HTTPS_PROXY", conf[GLOBAL].get("URL_PROXY"))
+            #url_list[PROXY_TRUE] = True
+    return url_list, url
+
+def free_url(command):
+    if command.get(PROXY_TRUE) != None:
+        csystem.delenv("HTTP_PROXY")
+        csystem.delenv("HTTPS_PROXY")
+
+def download(path):
+    command, url = parse_url(path)
     if url == None:
         csystem.echo_red("Downloading url: %s not exist" % url)
         return
@@ -162,6 +186,7 @@ def download(url):
         git_clone(url)
     else :
         download_http_file(url)
+    free_url(command)
 
 def fetch(args):
     if len(args) == 0:
