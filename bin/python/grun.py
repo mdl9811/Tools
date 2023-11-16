@@ -6,6 +6,7 @@ import re
 from optparse import OptionParser
 import pub.path as cpath
 import pub.system as csystem
+import pub.request_http as rq
 import subprocess
 import configparser
 import requests
@@ -20,6 +21,7 @@ RUN='run'
 FETCH='fetch'
 GLOBAL='global'
 PROCESS='process'
+DOWNLOAD="download"
 
 # const options
 PROXY_TRUE = 0
@@ -127,32 +129,6 @@ def get_git_download_path():
 def get_file_suffix(name):
     name.split("/")[-1]
 
-def download_http_file(url):
-    path = get_http_download_path()
-    if path == None:
-        csystem.echo_red("download path not exist please config path")
-        return
-    if not os.path.exists(path):
-        os.mkdir(path)
-    size = 0
-    chunk_size = 1024
-    start = time.time() # download start time
-    response = requests.get(url, stream=True)
-    if response.status_code != 200:
-        csystem.echo_red("Download failed with status code=%d" % response.status_code)
-        return
-    filepath = path + "\\" + url.split("/")[-1]
-    content_size = int(response.headers['content-length'])
-    print("download url: %s" % url)
-    print("download save path: %s" % filepath)
-    print("download,[File size]:{size:.2f} MB".format(size = content_size / chunk_size / 1024))
-    with open(filepath,'wb') as file:
-        for data in response.iter_content(chunk_size = chunk_size):
-            file.write(data)
-            size += len(data)
-            print('\r'+'[下载进度]:%s%.2f%%' % ('>' * int(size * 50 / content_size), float(size / content_size * 100)) ,end=' ')
-    end = time.time()
-    print('Download completed! times: %.2f秒' % (end - start))  #输出下载用时时间
 
 def git_clone(url):
     path = get_git_download_path()
@@ -189,7 +165,7 @@ def download(path):
     if url.split(".")[-1] == "git" :
         git_clone(url)
     else :
-        download_http_file(url)
+        csystem.download_http_file(url, get_http_download_path())
     free_url(command)
 
 def fetch(args):
@@ -254,6 +230,17 @@ def del_process(args):
             command = "wmic process where name='%s' call terminate" % ep
             os.system(command)
 
+def download_exe(args):
+    if len(args) == 0:
+        for v in conf[DOWNLOAD].items():
+            if v[1]:
+                rq.request_download_exe(v[1], get_http_download_path())
+        return
+    for name in args:
+        v = conf[DOWNLOAD].get(name)
+        if v != None:
+            rq.request_download_exe(v, get_http_download_path())
+
 def parse_command_line(options, args):
     if options.list:
         echo_list()
@@ -276,6 +263,9 @@ def parse_command_line(options, args):
     if options.delp:
         del_process(args[1:])
         return
+    if options.download:
+        download_exe(args[1:])
+        return
     runing_command(args[1:])
 
 def add_command():
@@ -288,6 +278,7 @@ def add_command():
     parser.add_option('-o', '--open', action='store_true', dest='open', help='open folder or exe file and exit') 
     parser.add_option('-g', '--generate-script', action='store_true', dest='generate', help='generate script and exit')
     parser.add_option('--delp', action='store_true', dest='delp', help='exit prossces')   
+    parser.add_option('--download', action='store_true', dest='download', help='download installs packet files and exit from options')
     return parser
 
 # 主函数
