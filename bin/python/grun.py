@@ -21,6 +21,7 @@ DOWNLOAD="download"
 
 # const options
 PROXY_TRUE = 0
+IS_DOWNLOAD = 1
 
 
 # 变量
@@ -159,7 +160,11 @@ def parse_url(command):
             csystem.echo_blue("set proxy:%s" % conf[GLOBAL].get("URL_PROXY"))
             csystem.setenv("HTTP_PROXY", conf[GLOBAL].get("URL_PROXY"))
             csystem.setenv("HTTPS_PROXY", conf[GLOBAL].get("URL_PROXY"))
-            #url_list[PROXY_TRUE] = True
+            url_list[PROXY_TRUE] = True
+        if com == 'no-download':
+            url_list[IS_DOWNLOAD] = False
+            csystem.echo_yellow("Not Download %s" % url)
+            return url_list, None
     return url_list, url
 
 def free_url(command):
@@ -169,6 +174,9 @@ def free_url(command):
 
 def download(path):
     command, url = parse_url(path)
+    if command.get(IS_DOWNLOAD) == False:
+        free_url(command)
+        return   
     if url == None:
         csystem.echo_red("Downloading url: %s not exist" % url)
         return
