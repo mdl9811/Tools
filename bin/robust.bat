@@ -2,4 +2,4 @@
 setlocal
 
 rem 执行 python
-python %~dp0python\grun.py %*
+python %~dp0python\robust.py %*

@@ -103,12 +103,11 @@ def echo_list(args):
 
 def execute_com(name):
     csystem.echo_blue("run " + name)
-    if os.path.isdir(name):
-        os.startfile(name)
-        return
-    if os.path.isfile(name):
+    sx = get_file_suffix(name)
+    if sx == 'exe':
         subprocess.Popen(name)
         return
+    os.startfile(name)
 
 def go_open(args):
     for name in args:
@@ -290,11 +289,14 @@ def parse_command_line(options, args):
     if options.download:
         download_exe(args[1:])
         return
+    if options.opc:
+        execute_com(config_path)
+        return
     runing_command(args[1:])
 
 def add_command():
     hstr = '%prog [options [name]...]'
-    parser = OptionParser(hstr, description='grun description', version=version.version())
+    parser = OptionParser(hstr, description='robust description', version=version.version())
     parser.add_option('-l', '--list', action='store_true', dest='list', help='--list:<args> configuration commands and exit')
     parser.add_option('-a', '--add', action='store_true', dest='add', help='add command configuration and exit')
     parser.add_option('-d', '--del', action='store_true', dest='dell', help='del command configuration and exit')
@@ -303,6 +305,7 @@ def add_command():
     parser.add_option('-g', '--generate-script', action='store_true', dest='generate', help='generate script and exit')
     parser.add_option('--delp', action='store_true', dest='delp', help='exit prossces')   
     parser.add_option('--download', action='store_true', dest='download', help='download installs packet files and exit from options')
+    parser.add_option('--opc', action='store_true', dest='opc', help='open config file and exit')
     return parser
 
 # 主函数
