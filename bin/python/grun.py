@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 import sys
 import os
-import string
 import re
 from optparse import OptionParser
 import pub.path as cpath
@@ -9,10 +8,7 @@ import pub.system as csystem
 import pub.request_http as rq
 import subprocess
 import configparser
-import requests
-import time
 import version
-
 
 # 解析所有命令 并执行 相关python
 
@@ -187,10 +183,16 @@ def fetch(args):
         for item in conf.items(FETCH):
             url=item[1]
             download(url)    
-        return
-    for arg in args:
-        url = get_remote_url(arg)
-        download(url)
+    else :
+        for arg in args:
+            url = get_remote_url(arg)
+            download(url)
+    v = input("\033[0;31;40m是否打开下载目录! 输入:1 打开\033[0m")
+    if v == "1":
+        print(v)
+        execute_com(get_http_download_path())
+        execute_com(get_git_download_path())
+
 
 def generate_script2(path, name, script):
     obj = re.search(r'Tools\\bin', path).span()

@@ -2,7 +2,6 @@ import requests
 import re
 import pub.system as csys
 
-
 def get_exe_regular_expression():
     return "[^<>\\\/^\"\']*\.exe"
 
