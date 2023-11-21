@@ -235,6 +235,10 @@ def delp():
     command = '@wmic process where name="%1" call terminate'
     return generate_bat(command)
 
+def grun():
+    command = 'python %~dp0python\robust.py %*'
+    return generate_bat(command)
+
 def generate_script(args):
     if len(args) < 2:
         csystem.echo_red("参数不对")
@@ -243,7 +247,10 @@ def generate_script(args):
         generate_script2(args[0], "genv.bat", genv_command())
         return
     if args[1] == 'delp':
-        generate_script2(args[0], "genv.bat", delp())
+        generate_script2(args[0], "delp.bat", delp())
+        return
+    if args[1] == 'grun':
+        generate_script2(args[0], "grun.bat", grun())
         return
 
 def del_process(args):
