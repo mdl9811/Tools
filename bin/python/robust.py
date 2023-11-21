@@ -236,7 +236,7 @@ def delp():
     return generate_bat(command)
 
 def grun():
-    command = 'python %~dp0python\robust.py %*'
+    command = 'python %~dp0python\\robust.py %*'
     return generate_bat(command)
 
 def generate_script(args):
